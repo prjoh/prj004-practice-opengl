@@ -14,14 +14,13 @@ out VS_OUT {
 
 uniform mat4 modelViewMatrix;
 uniform mat4 projectionMatrix;
-uniform mat4 normalMatrix;
+// uniform mat4 normalMatrix;
 
 void main()
 {
-  vec4 vertPos = modelViewMatrix * vec4(vertex, 1.0);
-  vs_out.vertPos = vertPos.xyz;
-  vs_out.normal = (normalMatrix * vec4(normal, 0.0)).xyz;
+  vs_out.vertPos = modelViewMatrix * vertex;
+  vs_out.normal = transpose(inverse(modelViewMatrix)) * normal;
   vs_out.texCoord = texCoord;
 
-  gl_Position = projectionMatrix * vertPos;
+  gl_Position = projectionMatrix * vs_out.vertPos;
 }
